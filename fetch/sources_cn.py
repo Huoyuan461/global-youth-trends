@@ -108,8 +108,8 @@ def fetch_weibo():
 
 
 def fetch_juhe(key):
-    """聚合数据·全网热搜榜。免费 50 次/天，覆盖 微博/抖音/快手/知乎/百度/B站。
-    无 key 时返回空列表（抖音等源将缺失，由状态横幅提示）。"""
+    """聚合数据·全网热搜榜。免费 50 次/天，返回全网综合热搜（含抖音/知乎/微博等平台爆款，
+    接口本身不细分来源）。无 key 时返回空列表（由状态横幅提示「聚合 未配置」）。"""
     items = []
     if not key:
         return items
@@ -118,16 +118,19 @@ def fetch_juhe(key):
         raw = _get(url)
         data = json.loads(raw)
         if data.get("error_code") == 0:
-            for i, it in enumerate(data.get("result", [])[:30], 1):
+            result = data.get("result") or {}
+            # 接口返回 {"list":[...]}（dict），同时兼容直接返回 list 的情况
+            lst = result.get("list") if isinstance(result, dict) else (result or [])
+            for i, it in enumerate(lst[:30], 1):
                 title = it.get("title") or it.get("keyword")
                 if not title:
                     continue
-                src = it.get("from", "")
+                hot = it.get("hotnum") or it.get("hot")
                 items.append({
-                    "platform": f"聚合·{src}" if src else "聚合",
+                    "platform": "聚合·全网热搜",
                     "region": "cn", "sub_region": "cn", "rank": i,
-                    "title": title, "url": it.get("url", ""),
-                    "heat": it.get("hot"), "category": None,
+                    "title": title, "url": it.get("url", "") or "",
+                    "heat": parse_heat(hot), "category": None,
                 })
     except Exception as e:
         items.append({"_error": f"juhe:{e}"})
