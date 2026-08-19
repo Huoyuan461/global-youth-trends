@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>全球 + 中国青年关注榜</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <header class="site">
+    <h1>🌍 全球 + 中国青年关注榜</h1>
+    <div class="meta">
+      <span id="meta-updated">更新时间：加载中…</span>
+      <span id="meta-count"></span>
+      <span>每 3 小时自动刷新 · 数据来源于公开热榜</span>
+    </div>
+  </header>
+
+  <div id="banner" class="banner" style="display:none"></div>
+
+  <nav class="tabs">
+    <button data-tab="combined" class="active">综合热榜</button>
+    <button data-tab="cn">中国</button>
+    <button data-tab="global">全球</button>
+    <button data-tab="search">搜索趋势</button>
+    <button data-tab="industry">行业排行</button>
+    <button data-tab="history">历史趋势</button>
+  </nav>
+
+  <main>
+    <section id="sec-combined" class="section active">
+      <div class="card">
+        <h2>综合热榜（国内 + 全球合并，按平台内归一化评分排序）</h2>
+        <div id="combined-body"></div>
+      </div>
+    </section>
+
+    <section id="sec-cn" class="section">
+      <div id="cn-body"></div>
+    </section>
+
+    <section id="sec-global" class="section">
+      <div class="card">
+        <h2>全球热榜</h2>
+        <div class="filter-row" id="geo-filter"></div>
+        <div id="global-body"></div>
+      </div>
+    </section>
+
+    <section id="sec-search" class="section">
+      <div class="grid2">
+        <div class="card"><h2>百度热搜（国内搜索热度）</h2><div id="search-cn"></div></div>
+        <div class="card"><h2>Google Trends（全球搜索热度）</h2><div id="search-global"></div></div>
+      </div>
+    </section>
+
+    <section id="sec-industry" class="section">
+      <div class="grid2">
+        <div class="card"><h2>国内行业分布</h2><div class="chart-box"><canvas id="chart-cn"></canvas></div><div id="ind-cn"></div></div>
+        <div class="card"><h2>全球行业分布</h2><div class="chart-box"><canvas id="chart-global"></canvas></div><div id="ind-global"></div></div>
+      </div>
+    </section>
+
+    <section id="sec-history" class="section">
+      <div class="card">
+        <h2>行业热度历史趋势（近 90 天）</h2>
+        <div class="chart-box" style="height:360px"><canvas id="chart-history"></canvas></div>
+        <div class="note" id="history-note"></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+name: refresh-trends
+
+on:
+  schedule:
+    # 约北京时间 09/12/15/18/21/00/03/06 每 3 小时刷新一次（UTC 时间）
+    - cron: "0 1,4,7,10,13,16,19,22 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install deps
+        run: pip install -r requirements.txt
+      - name: Fetch & build
+        env:
+          JUHE_KEY: ${{ secrets.JUHE_KEY }}
+        run: python fetch/build.py
+      - name: Commit refreshed data
+        run: |
+          git config user.email "bot@github.com"
+          git config user.name "trends-bot"
+          git add data site/data.js site/history_index.json
+          git commit -m "chore: refresh $(date -u +%F-%T)" || echo "no change"
+          git push
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

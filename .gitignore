@@ -1,0 +1,12 @@
+# Python
+__pycache__/
+*.pyc
+
+# 本地预览临时文件
+*.log
+
+# 不提交本地生成的快照（Actions 会重新生成并推送）
+# 如需保留历史记录，可删除下面两行
+# data/latest.json
+# site/data.js
+# site/history_index.json

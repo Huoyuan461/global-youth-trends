@@ -1,0 +1,3 @@
+# 本项目抓取层仅使用 Python 标准库（urllib / xml.etree），无需第三方依赖。
+# 保留此文件以便工作流 `pip install -r requirements.txt` 正常执行（空依赖）。
+# 如需扩展（如用 requests / beautifulsoup4 解析 HTML），在此添加即可。
