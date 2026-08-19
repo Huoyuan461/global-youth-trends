@@ -91,7 +91,7 @@ python fetch/build.py
 
 > `score` 是展示排序用的综合分（热度 × 来源权重，搜索类权重略高，因其更代表"关心"），不是客观指数。
 
-## 六、申请并启用 JUHE_KEY（补缺抖音 / 补全知乎）
+## 六、申请并启用 JUHE_KEY（补全国内全网热搜）
 
 免费步骤：
 1. 打开 https://www.juhe.cn/ 注册并实名（个人即可）。
@@ -100,7 +100,7 @@ python fetch/build.py
 4. 回 GitHub 仓库 `Settings → Secrets and variables → Actions → New repository secret`：
    - Name: `JUHE_KEY` ｜ Secret: 粘贴你的 key
 5. 保存后下次 Actions 运行（或手动 Run workflow）即自动接入，**无需改代码**。
-6. 效果：补上抖音热榜 + 更完整的知乎（未登录直连仅 3 条，聚合补满）。
+6. 效果：聚合「全网热搜榜」返回约 40 条全网综合热搜（含抖音/知乎/微博等平台爆款，接口本身不细分来源），补全国内热榜覆盖；知乎未登录直连仅 3 条，聚合可补满其爆款。
 
 > 免费档 50 次/天；默认每 3h 跑 1 次、每次 1 次调用，够用。若改成每小时刷新会超限，需升级档位或降低调用频率。
 
